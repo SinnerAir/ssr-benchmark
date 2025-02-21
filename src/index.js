@@ -5,6 +5,7 @@ import { buildNextHandler, buildNextPagesHandler } from "./next.js";
 import { buildNuxtHandler } from "./nuxt.js";
 import { buildSveltekitHandler } from "./svelte.js";
 import { buildAstroHandler } from "./astro.js";
+import { buildAstroSolidHandler } from "./astro-solid.js";
 import http from "node:http";
 import { getDuplicationFactor, logResultsTable } from "./result-format.js";
 
@@ -23,6 +24,9 @@ async function runHandlers(handlers) {
     time: 10_000,
     setup: async (task, mode) => {
       if (mode == "run") console.log(`Running ${task.name} benchmark...`);
+      if (mode == "warmup" && typeof globalThis.gc !== "undefined") {
+        globalThis.gc();
+      }
     },
   });
 
@@ -32,16 +36,17 @@ async function runHandlers(handlers) {
     });
   }
 
-  await bench.warmup();
   await bench.run();
 
   for (let handler of handlers) {
     let response = await run(handler.handler, true);
+    const taskResult = bench.getTask(handler.name);
 
-    bench.getTask(handler.name).setResult({
+    taskResult.result = {
+      ...taskResult.result,
       bodyLength: response.length,
       duplicationFactor: getDuplicationFactor(response.body),
-    });
+    };
   }
 
   logResultsTable(bench);
@@ -62,11 +67,11 @@ const handlers = [
     group: "renderers",
     handler: await import("vue-benchmark").then((x) => x.buildHandler()),
   },
-  {
-    name: "mfng",
-    group: "frameworks",
-    handler: await import("mfng-benchmark").then((x) => x.buildHandler()),
-  },
+  // {
+  //   name: "mfng",
+  //   group: "frameworks",
+  //   handler: await import("mfng-benchmark").then((x) => x.buildHandler()),
+  // },
   { name: "remix", group: "frameworks", handler: await buildRemixHandler() },
   { name: "next", group: "frameworks", handler: await buildNextHandler() },
   {
@@ -81,6 +86,7 @@ const handlers = [
     handler: await buildSveltekitHandler(),
   },
   { name: "astro", group: "frameworks", handler: await buildAstroHandler() },
+  { name: "astro-solid", group: "frameworks", handler: await buildAstroSolidHandler() },
   {
     name: "hono",
     group: "renderers",
@@ -96,25 +102,24 @@ const handlers = [
     group: "renderers",
     handler: await import("kita-benchmark").then((x) => x.handler),
   },
-  {
-    name: "qwik",
-    group: "renderers",
-    handler: await import("qwik-benchmark").then((x) => x.handler),
-  },
-  {
-    name: "qwik-city",
-    group: "frameworks",
-    handler: await import("qwik-city-benchmark").then((x) => x.handler),
-  },
+  // {
+  //   name: "qwik",
+  //   group: "renderers",
+  //   handler: await import("qwik-benchmark-new").then((x) => x.handler),
+  // },
+  // {
+  //   name: "qwik-city",
+  //   group: "frameworks",
+  //   handler: await import("qwik-city-benchmark").then((x) => x.handler),
+  // },
 ];
 
 console.log("Benchmarking frameworks");
 await runHandlers(handlers.filter((x) => !x.group || x.group == "frameworks"));
 
-console.log("Benchmarking renderers");
-await runHandlers(handlers.filter((x) => !x.group || x.group == "renderers"));
+// console.log("Benchmarking renderers");
+// await runHandlers(handlers.filter((x) => !x.group || x.group == "renderers"));
 
-console.log();
 console.log("Check out the actual render results:");
 
 for (let handler of handlers) {
