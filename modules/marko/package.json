@@ -7,12 +7,12 @@
     "build": "cross-env NODE_ENV=production vite build --ssr src/index.ts"
   },
   "dependencies": {
-    "marko": "^5.33.15"
+    "marko": "^5.37.16"
   },
   "devDependencies": {
-    "@marko/vite": "^4.1.4",
+    "@marko/vite": "^5.0.14",
     "cross-env": "^7.0.3",
-    "vite": "^5.2.8"
+    "vite": "^6.1.1"
   },
   "main": "dist/index.js"
 }

@@ -9,11 +9,11 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@kitajs/html": "^4.1.0",
-    "tslib": "^2.6.2"
+    "@kitajs/html": "^4.2.7",
+    "tslib": "^2.8.1"
   },
   "devDependencies": {
-    "@types/node": "^20.10.5",
-    "typescript": "^5.4.5"
+    "@types/node": "^22.13.4",
+    "typescript": "^5.7.3"
   }
 }

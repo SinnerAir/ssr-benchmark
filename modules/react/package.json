@@ -7,16 +7,16 @@
     "build": "vite build --ssr src/entry-server.tsx --outDir dist"
   },
   "dependencies": {
-    "react": "^19.0.0-canary-4c12339ce-20240408",
-    "react-dom": "^19.0.0-canary-4c12339ce-20240408"
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "@types/node": "^20.10.5",
-    "@types/react": "^18.2.45",
-    "@types/react-dom": "^18.2.18",
-    "@vitejs/plugin-react": "^4.2.1",
-    "typescript": "^5.3.3",
-    "vite": "^5.0.10"
+    "@types/node": "^22.13.4",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "@vitejs/plugin-react": "^4.3.4",
+    "typescript": "^5.7.3",
+    "vite": "^6.1.1"
   },
   "types": "dist/entry-server.d.ts",
   "main": "dist/entry-server.js"

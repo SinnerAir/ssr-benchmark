@@ -7,14 +7,14 @@
     "build": "vite build --ssr src/entry-server.tsx --outDir dist"
   },
   "devDependencies": {
-    "@types/node": "^20.10.5",
-    "typescript": "^5.3.3",
-    "vite": "^5.0.10"
+    "@types/node": "^22.13.4",
+    "typescript": "^5.7.3",
+    "vite": "^6.1.1"
   },
   "types": "dist/entry-server.d.ts",
   "main": "dist/entry-server.js",
   "dependencies": {
-    "@hono/node-server": "^1.9.1",
-    "hono": "^4.2.3"
+    "@hono/node-server": "^1.13.8",
+    "hono": "^4.7.2"
   }
 }
