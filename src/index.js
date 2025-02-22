@@ -54,11 +54,6 @@ async function runHandlers(handlers) {
 
 const handlers = [
   {
-    name: "solid",
-    group: "renderers",
-    handler: await import("solid-benchmark").then((x) => x.buildHandler()),
-  },
-  {
     name: "react",
     handler: await import("react-benchmark").then((x) => x.buildHandler()),
   },
@@ -87,11 +82,11 @@ const handlers = [
   },
   { name: "astro", group: "frameworks", handler: await buildAstroHandler() },
   { name: "astro-solid", group: "frameworks", handler: await buildAstroSolidHandler() },
-  {
-    name: "hono",
-    group: "renderers",
-    handler: await import("hono-benchmark").then((x) => x.buildHandler()),
-  },
+  // {
+  //   name: "hono",
+  //   group: "frameworks",
+  //   handler: await import("hono-benchmark").then((x) => x.buildHandler()),
+  // },
   {
     name: "marko",
     group: "renderers",
@@ -112,13 +107,18 @@ const handlers = [
   //   group: "frameworks",
   //   handler: await import("qwik-city-benchmark").then((x) => x.handler),
   // },
+  {
+    name: "solid",
+    group: "renderers",
+    handler: await import("solid-benchmark").then((x) => x.buildHandler()),
+  },
 ];
 
 console.log("Benchmarking frameworks");
 await runHandlers(handlers.filter((x) => !x.group || x.group == "frameworks"));
 
-// console.log("Benchmarking renderers");
-// await runHandlers(handlers.filter((x) => !x.group || x.group == "renderers"));
+console.log("Benchmarking renderers");
+await runHandlers(handlers.filter((x) => !x.group || x.group == "renderers"));
 
 console.log("Check out the actual render results:");
 
